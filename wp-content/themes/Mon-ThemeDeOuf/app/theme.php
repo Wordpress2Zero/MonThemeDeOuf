@@ -37,4 +37,11 @@ function ajouter_css_et_js() {
 // Ajouter l'action pour exécuter la fonction lors du chargement des scripts
 add_action('wp_enqueue_scripts', 'ajouter_css_et_js');
 //##############################################################################
+// Ajouter la prise en charge des images mises en avant
+add_theme_support( 'post-thumbnails' );
 
+// Définir les tailles d'images personnalisées
+// add_image_size( 'nom_de_la_taille', largeur, hauteur, crop );
+
+// Exemple de taille d'image personnalisée
+// add_image_size( 'thumbnail-custom', 300, 200, true );
