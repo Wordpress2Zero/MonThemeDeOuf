@@ -1,73 +1,68 @@
- <div class="sidebar">
-                    <h3 class="sidebar-title">Recherche</h3>
-                    <div class="sidebar-item search-form">
-                        <form action="">
-                            <input type="text">
-                            <button type="submit"><i class="bi bi-search"></i></button>
-                        </form>
-                    </div><!-- End sidebar search formn-->
-                    
-                    <h3 class="sidebar-title">Categories</h3>
-                    <div class="sidebar-item categories">
-                       <?php 
-            wp_list_categories(array(
-                'show_count' => true,  // Afficher le nombre d'articles entre parenthèses
-                'title_li' => '',      // Supprimer le titre par défaut de la liste
-            )); 
-            ?>
-                    </div><!-- End sidebar categories-->
-                    
-                    <h3 class="sidebar-title">Recent Posts</h3>
-                    <div class="sidebar-item recent-posts">
-                    <div class="post-item clearfix">
-                      <img src="assets/img/blog/blog-recent-1.jpg" alt="">
-                      <h4><a href="blog-single.html">Nihil blanditiis at in nihil autem</a></h4>
-                      <time datetime="2020-01-01">Jan 1, 2020</time>
-                    </div>
+<div class="sidebar">
+    <h3 class="sidebar-title">Recherche</h3>
+    
+    <div class="sidebar-item search-form">
+        <form role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>">
+            <input type="text" name="s" placeholder="Mots clés..." value="<?php echo get_search_query(); ?>">
+            <button type="submit"><i class="bi bi-search"></i></button>
+        </form>
+    </div><!-- End sidebar search form -->
 
-                    <div class="post-item clearfix">
-                      <img src="assets/img/blog/blog-recent-2.jpg" alt="">
-                      <h4><a href="blog-single.html">Quidem autem et impedit</a></h4>
-                      <time datetime="2020-01-01">Jan 1, 2020</time>
-                    </div>
+     
+     <h3 class="sidebar-title">Categories</h3>
+     <div class="sidebar-item categories">
+         <ul>
+         <?php 
+         wp_list_categories(array(
+             'show_count' => true,  // Afficher le nombre d'articles entre parenthèses
+             'title_li' => '',      // Supprimer le titre par défaut de la liste
+         ));
+         ?>
+         </ul>
+     </div><!-- End sidebar categories-->
+    
+    <h3 class="sidebar-title">Articles récents</h3>
+    
+    <div class="sidebar-item recent-posts">
+        <?php
+        // La requête WP_Query pour récupérer les 5 derniers articles
+        $args = array(
+            'posts_per_page' => 5,
+            'post_status' => 'publish'
+        );
+        $query = new WP_Query( $args );
+        if ($query->have_posts()) :
+        ?>  
+        <div class="sidebar-item recent-posts">
+        <?php while ($query->have_posts()) : $query->the_post(); ?>
+            <div class="post-item clearfix">
+                <?php if (has_post_thumbnail()) : ?>
+                <img src="<?php the_post_thumbnail_url('thumbnail'); ?>" alt="<?php the_title_attribute(); ?>">
+            <?php endif; ?>
+            <h4><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>
+            <time datetime="<?php echo get_the_date('Y-m-d'); ?>"><?php echo get_the_date('j M, Y'); ?></time>
+        </div>
+            <?php  endwhile;
+            wp_reset_postdata();
+           ?> 
+            </div>
+        <?php  endif; ?>
+    </div>
+    
+    <h3 class="sidebar-title">Tags</h3>
+    <div class="sidebar-item tags">
+    <ul>
+        <?php
+        $tags = get_tags();
+        if ($tags) {
+            foreach ($tags as $tag) {
+                echo '<li><a href="' . get_tag_link($tag->term_id) . '">' . $tag->name . '</a></li>';
+            }
+        }
+        ?>
+    </ul>
+    </div><!-- End sidebar tags -->
 
-                    <div class="post-item clearfix">
-                      <img src="assets/img/blog/blog-recent-3.jpg" alt="">
-                      <h4><a href="blog-single.html">Id quia et et ut maxime similique occaecati ut</a></h4>
-                      <time datetime="2020-01-01">Jan 1, 2020</time>
-                    </div>
-
-                    <div class="post-item clearfix">
-                      <img src="assets/img/blog/blog-recent-4.jpg" alt="">
-                      <h4><a href="blog-single.html">Laborum corporis quo dara net para</a></h4>
-                      <time datetime="2020-01-01">Jan 1, 2020</time>
-                    </div>
-
-                    <div class="post-item clearfix">
-                      <img src="assets/img/blog/blog-recent-5.jpg" alt="">
-                      <h4><a href="blog-single.html">Et dolores corrupti quae illo quod dolor</a></h4>
-                      <time datetime="2020-01-01">Jan 1, 2020</time>
-                    </div>
-
-                  </div><!-- End sidebar recent posts-->
-
-                  <h3 class="sidebar-title">Tags</h3>
-                  <div class="sidebar-item tags">
-                    <ul>
-                      <li><a href="#">App</a></li>
-                      <li><a href="#">IT</a></li>
-                      <li><a href="#">Business</a></li>
-                      <li><a href="#">Mac</a></li>
-                      <li><a href="#">Design</a></li>
-                      <li><a href="#">Office</a></li>
-                      <li><a href="#">Creative</a></li>
-                      <li><a href="#">Studio</a></li>
-                      <li><a href="#">Smart</a></li>
-                      <li><a href="#">Tips</a></li>
-                      <li><a href="#">Marketing</a></li>
-                    </ul>
-                  </div><!-- End sidebar tags-->
-
-            </div><!-- End sidebar -->
+</div><!-- End sidebar -->
 
          
